@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,9 +9,10 @@ public class Author extends Person {
         super(name);
     }
 
-    public Book newBook(String bookId, String name,
-                        double price, String  status, String edition, LocalDate dateOfPuchase, BookType type){
-        Book b = new Book(bookId, this, name, price, status, edition, dateOfPuchase, type );
+
+    public Book newBook(String bookId, String author, String name,
+                        double price, String  status, String edition, BookType type){
+        Book b = new Book(bookId, this, name, price, status, edition, type );
         books.add(b);
         return b;
     }

@@ -1,21 +1,23 @@
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Reader extends Person {
-    private Set<Book> books = new LinkedHashSet<>();
-    private MemberRecord membership;
+    private final Set<Book> books = new LinkedHashSet<>();
+    private final MemberRecord membership;
+
+    public Reader(MemberRecord membership) {
+        super(membership.getName());
+        this.membership = membership;
+    }
 
     public MemberRecord getMembership() {
         return membership;
     }
 
 
-    public Reader(String name, MemberRecord membership) {
-        super(name);
-        this.membership = membership;
-    }
     public void purchaseBook(Book book){
         if(!books.add(book)) {
             System.out.println("Zaten bu kitabı satın almışsınız.");
@@ -28,19 +30,23 @@ public class Reader extends Person {
     }
 
     public void borrowBook(Book book){
-        if("!available".equalsIgnoreCase(book.getStatus())) {
+        if(!"available".equalsIgnoreCase(book.getStatus())) {
             System.out.println("Kitap başka kişide.");
             return;
         }
-        if(membership.getBooksIssued() > membership.getMaxBookLimit() ){
-            System.out.println("Kitap ödünç limitini aştınız.");
+        if(books.contains(book)){
+            System.out.println("Kitap sizde");
             return;
+        }
+        if(membership.getBooksIssued() >= membership.getMaxBookLimit() ){
+            throw new IllegalArgumentException("Kitap ödünç limitini aştınız." + membership.getMaxBookLimit());
         }
         if(!books.add(book)) {
             System.out.println("Kitabı zaten ödünç almıştınız");
             return;
         }
         membership.incBookIssued();
+        books.add(book);
         book.changeOwner(this);
         System.out.println("'" + book.getTitle() + " ' ödünç alındı.");
     }
@@ -53,6 +59,10 @@ public class Reader extends Person {
         } else {
             System.out.println("Bu kitabı siz almadınız.");
         }
+    }
+
+    public Set<Book> getBorrowedBooks() {
+        return Collections.unmodifiableSet(books);
     }
 
     @Override

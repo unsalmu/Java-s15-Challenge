@@ -22,7 +22,6 @@ public abstract class MemberRecord {
         this.name = name;
         this.address = address;
         this.phoneNo = phoneNo;
-        this.noBooksIssued = noBooksIssued;
     }
 
     public String getMemberId() {
@@ -56,6 +55,7 @@ public abstract class MemberRecord {
     public String getPhoneNo() {
         return phoneNo;
     }
+
     public int getNoBooksIssued(){
         return noBooksIssued;
     }

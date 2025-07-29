@@ -15,18 +15,32 @@ public class Book {
 
     public Book(String bookId, Author author, String name,
                 double price, String status, String edition,
-                LocalDate date_of_purchase, BookType type) {
+                BookType type) {
         this.bookId = bookId;
         this.author = author;
         this.name = name;
         this.price = price;
         this.status = status; //issued ve available
         this.edition = edition;
+        this.type = type;
+    }
+
+    public Book(String bookId, Author author, String name,
+                double price, String status, String edition,
+                LocalDate dateOfPurchase, LocalDate borrowedDate,
+                Person owner, BookType type) {
+        this.bookId = bookId;
+        this.author = author;
+        this.name = name;
+        this.price = price;
+        this.status = status;
+        this.edition = edition;
         this.dateOfPurchase = dateOfPurchase;
         this.borrowedDate = borrowedDate;
         this.owner = owner;
         this.type = type;
     }
+
     public String getBookId(){
         return bookId;
     }
@@ -37,8 +51,7 @@ public class Book {
         this.dateOfPurchase = dateOfPurchase;
     }
 
-
-    public String  getTitle() {
+    public String getTitle() {
         return name;
     }
     public LocalDate getBorrowedDate() {
@@ -46,6 +59,10 @@ public class Book {
     }
     public void setBorrowedDate(LocalDate borrowedDate) {
         this.borrowedDate = borrowedDate;
+    }
+
+    public String getEdition() {
+        return edition;
     }
 
     public Author getAuthor() {
@@ -59,8 +76,10 @@ public class Book {
     public void changeOwner(Person newOwner ) {
         this.owner = newOwner;
         updatedStatus("issued");
+        this.borrowedDate = LocalDate.now();
 
     }
+
 
     public void updatedStatus(String status) {
         this.status = status;
@@ -68,6 +87,26 @@ public class Book {
 
     public Person getOwner() {
         return owner;
+    }
+
+    public double getPrice(){
+        return price;
+    }
+
+    public void setTitle(String title) {
+        this.name = title;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
+    }
+
+    public void setType(BookType type) {
+        this.type = type;
     }
 
     public void display(){
@@ -89,5 +128,9 @@ public class Book {
                 ", date_of_purchase=" + dateOfPurchase +
                 ", owner=" + owner +
                 '}';
+    }
+
+    public BookType getType() {
+        return type;
     }
 }
