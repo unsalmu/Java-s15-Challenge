@@ -1,0 +1,482 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "Main",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_104069929 { 
+   	label=model
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Author104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Author</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   books: List&lt;Book&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ createBook(bookId: String, title: String, price: double, status: BookStatus, edition: String, type: BookType): Book</TD></TR>
+<TR><TD ALIGN="LEFT" >+ whoYouAre(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Book104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Book</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   author: Author [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bookId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   borrowedDate: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dateOfPurchase: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   edition: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   owner: Reader [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   price: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   status: BookStatus [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   title: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   type: BookType [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ changeOwner(owner: Reader)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateStatus(status: BookStatus)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Faculty104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Faculty</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Librarian104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Librarian</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   password: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ whoYouAre(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MemberRecord104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MemberRecord</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   address: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dateOfMembership: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxBookLimit: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   member: Reader [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   memberId: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   noBooksIssued: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   phoneNo: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   type: MemberType [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ decBookIssued()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ incBookIssued()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ payBill(amount: double)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Person104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Person</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ whoYouAre(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Reader104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Reader</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   borrowedBooks: Set&lt;Book&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   record: MemberRecord [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ borrowBook(book: Book): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hasBook(book: Book): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ purchaseBook(book: Book)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ returnBook(book: Book): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ showBook(): Set&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ whoYouAre(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Student104069929[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Student</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1950800714 { 
+   	label=repository
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   InMemoryLibraryRepository1950800714[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InMemoryLibraryRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   booksById: Map&lt;String, Book&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   readersById: Map&lt;String, Reader&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ deleteBook(id: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findAllBooks(): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findAllReaders(): List&lt;Reader&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findBookById(id: String): Optional&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findBooksByAuthor(authorName: String): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findBooksByTitle(title: String): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findBooksByType(type: BookType): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findReaderById(memberId: String): Optional&lt;Reader&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findReadersByName(name: String): List&lt;Reader&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveBook(book: Book)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveReader(reader: Reader)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1984153269 { 
+   	label=service
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   LibrarianService1984153269[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)LibrarianService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bookValidator: BookValidator [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   readerService: ReaderService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   readerValidator: ReaderValidator [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repository: InMemoryLibraryRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addBook(book: Book): ServiceResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateFine(memberId: String, bookId: String): ServiceResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteBook(bookId: String): ServiceResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ issueBook(bookId: String, memberId: String): ServiceResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ listAllBooks(): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ listAllReaders(): List&lt;Reader&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ listBooksByAuthor(authorName: String): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ listBooksByType(type: BookType): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ registerReader(reader: Reader)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ returnBook(bookId: String, memberId: String): ServiceResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ searchBookById(bookId: String): Optional&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ searchBooksByTitle(title: String): List&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateBook(bookId: String, title: String, price: double, edition: String, type: BookType): ServiceResult</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ReaderService1984153269[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ReaderService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   repository: InMemoryLibraryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   validator: ReaderValidator [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ borrowBook(memberId: String, bookId: String): ServiceResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ listBorrowedBooks(memberId: String): Set&lt;Book&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ returnBook(memberId: String, bookId: String): ServiceResult</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_2390489 { 
+   	label=Main
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Main2390489[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Main</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ main(args: String[])</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_3600386 { 
+   	label=util
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   SampleDataInitializer3600386[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SampleDataInitializer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- createSampleBooks(repository: InMemoryLibraryRepository)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createSampleReaders(librarianService: LibrarianService)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initializeData(repository: InMemoryLibraryRepository, librarianService: LibrarianService)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_43562887 { 
+   	label=validation
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   BookValidator43562887[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BookValidator</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   repository: InMemoryLibraryRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ validateForCreate(book: Book): Optional&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CommonValidations43562887[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CommonValidations</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ isBlank(s: String): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ReaderValidator43562887[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ReaderValidator</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   repository: InMemoryLibraryRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ validateBorrow(memberId: String, bookId: String): Optional&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ validateFine(memberId: String, bookId: String): Optional&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ validateReturn(memberId: String, bookId: String): Optional&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_637428636 { 
+   	label=controller
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   LibraryController637428636[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)LibraryController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   librarianService: LibrarianService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   readerService: ReaderService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scanner: Scanner [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- handleAddBook()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleAddMember()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleBorrowBook()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleCreateBill()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleFineCalculation()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleListBooks()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleListBooksByAuthor()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleListBooksByType()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleListBorrowedBooks()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleListMembers()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleRemoveBook()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleReturnBook()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleSearchBook()</TD></TR>
+<TR><TD ALIGN="LEFT" >- handleUpdateBook()</TD></TR>
+<TR><TD ALIGN="LEFT" >- printMenu()</TD></TR>
+<TR><TD ALIGN="LEFT" >- promptEnum(label: String, type: Class&lt;T&gt;): T</TD></TR>
+<TR><TD ALIGN="LEFT" >- promptNonBlank(label: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >- promptPositiveDouble(label: String): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+'edges    
+Author104069929 -> Book104069929[label="books
+[0..*]"];
+BookValidator43562887 -> InMemoryLibraryRepository1950800714[label="repository
+[0..1]"];
+InMemoryLibraryRepository1950800714 -> Book104069929[label="booksById
+[0..*]"];
+InMemoryLibraryRepository1950800714 -> Reader104069929[label="readersById
+[0..*]"];
+LibrarianService1984153269 -> BookValidator43562887[label="bookValidator
+[0..1]"];
+LibrarianService1984153269 -> InMemoryLibraryRepository1950800714[label="repository
+[0..1]"];
+LibrarianService1984153269 -> ReaderService1984153269[label="readerService
+[0..1]"];
+LibrarianService1984153269 -> ReaderValidator43562887[label="readerValidator
+[0..1]"];
+LibraryController637428636 -> LibrarianService1984153269[label="librarianService
+[0..1]"];
+LibraryController637428636 -> Reader104069929[label="handleListMembers() -> whoYouAre()"];
+LibraryController637428636 -> ReaderService1984153269[label="readerService
+[0..1]"];
+Main2390489 -> LibraryController637428636[label="main() -> run()"];
+Main2390489 -> SampleDataInitializer3600386[label="main() -> initializeData()"];
+MemberRecord104069929 -> Faculty104069929[arrowhead=none, arrowtail=empty, dir=both];
+MemberRecord104069929 -> Reader104069929[label="member
+[0..1]"];
+MemberRecord104069929 -> Student104069929[arrowhead=none, arrowtail=empty, dir=both];
+Person104069929 -> Author104069929[arrowhead=none, arrowtail=empty, dir=both];
+Person104069929 -> Librarian104069929[arrowhead=none, arrowtail=empty, dir=both];
+Person104069929 -> Reader104069929[arrowhead=none, arrowtail=empty, dir=both];
+Reader104069929 -> Book104069929[label="borrowedBooks
+[0..*]"];
+Reader104069929 -> MemberRecord104069929[label="record
+[0..1]"];
+ReaderService1984153269 -> InMemoryLibraryRepository1950800714[label="repository
+[0..1]"];
+ReaderService1984153269 -> ReaderValidator43562887[label="validator
+[0..1]"];
+ReaderValidator43562887 -> InMemoryLibraryRepository1950800714[label="repository
+[0..1]"];
+    
+}
+@enduml
