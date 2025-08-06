@@ -25,6 +25,9 @@ public class BookValidator {
         if (book.getPrice() < 0) {
             return Optional.of("Price cannot be negative");
         }
+        if (book.getPrice() == 0) {
+            return Optional.of("Price cannot be zero");
+        }
         if (book.getEdition() == null) {
             return Optional.of("Edition cannot be null");
         }

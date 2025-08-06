@@ -6,9 +6,11 @@ import service.ReaderService;
 import service.ServiceResult;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LibraryController {
     private final LibrarianService librarianService;
@@ -19,7 +21,48 @@ public class LibraryController {
         this.librarianService = librarianService;
         this.readerService = readerService;
     }
+    // Kullanıcıdan gelen verileri kontrol eden ve işleyen metotlar
+    private String promptNonBlank(String label) {
+        while (true) {
+            System.out.print(label);
+            String s = scanner.nextLine();
+            if (s != null && !s.trim().isEmpty()) return s.trim();
+            System.out.println("Value cannot be blank, try again.");
+        }
+    }
 
+    private double promptPositiveDouble(String label) {
+        while (true) {
+            System.out.print(label);
+            try {
+                double v = Double.parseDouble(scanner.nextLine().trim());
+                if (v > 0) return v;
+                System.out.println("Price must be greater than 0.");
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private <T extends Enum<T>> T promptEnum(String label, Class<T> type) {
+        String options = Arrays.stream(type.getEnumConstants())
+                .map(Enum::name)
+                .collect(Collectors.joining("/"));
+        while (true) {
+            System.out.printf("%s (%s): ", label, options);
+            try {
+                return Enum.valueOf(type, scanner.nextLine().trim().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid value, try again.");
+            }
+        }
+    }
+
+    // Ana menüyü ve seçenekleri gösteren metot
+    // Kullanıcıdan gelen seçimlere göre ilgili işlemleri yapan metotlar
+    // Her işlem için ayrı metotlar tanımlanmıştır
+    // Bu metotlar, kullanıcıdan gerekli bilgileri alır ve ilgili servis metotlarını çağırır
+    // Sonuçları kullanıcıya bildirir
     public void run() {
         boolean exit = false;
         while (!exit) {
@@ -63,36 +106,36 @@ public class LibraryController {
 0-Exit""");
         System.out.print("Choice: ");
     }
-
+// kitap ekleme işlemi için gerekli bilgileri alır ve kitap ekler
     private void handleAddBook() {
-        System.out.print("Book ID: ");
-        String id = scanner.nextLine();
-        System.out.print("Author name: ");
-        String authorName = scanner.nextLine();
-        Author author = new Author(authorName);
-        System.out.print("Title: ");
-        String title = scanner.nextLine();
-        System.out.print("Price: ");
-        double price = Double.parseDouble(scanner.nextLine());
-        System.out.print("Status (AVAILABLE/ISSUED): ");
-        BookStatus status = BookStatus.valueOf(scanner.nextLine().trim().toUpperCase());
-        System.out.print("Edition: ");
-        String edition = scanner.nextLine();
-        System.out.print("Type (STUDYBOOK/JOURNAL/MAGAZINE): ");
-        BookType type = BookType.valueOf(scanner.nextLine().trim().toUpperCase());
+        String id        = promptNonBlank("Book ID: ");
+        String authorNm  = promptNonBlank("Author name: ");
+        Author author    = new Author(authorNm);
+        String title     = promptNonBlank("Title: ");
+        double price     = promptPositiveDouble("Price: ");
+        BookStatus status= promptEnum("Status", BookStatus.class);
+        String edition   = promptNonBlank("Edition: ");
+        BookType type    = promptEnum("Type", BookType.class);
 
         Book book = new Book(id, author, title, price, status, edition, type);
         ServiceResult result = librarianService.addBook(book);
         System.out.println(result.getMessage());
     }
-
+//kitapları listeleme işlemi için tüm kitapları alır ve ekrana yazdırır
     private void handleListBooks() {
         List<Book> books = librarianService.listAllBooks();
         if (books.isEmpty()) {
             System.out.println("No books");
             return;
         }
-        books.forEach(b -> System.out.println(b.getBookId() + " - " + b.getTitle() + " (" + b.getStatus() + ")"));
+        books.forEach(b -> System.out.println(
+                b.getBookId() + " - " + b.getTitle() +
+                        " by " + b.getAuthor().getName() +
+                        " ($" + b.getPrice() + ") - " +
+                        b.getEdition() + " edition - " +
+                        b.getType() + " - " +
+                        b.getStatus()
+        ));
     }
 
     private void handleBorrowBook() {
@@ -172,11 +215,23 @@ public class LibraryController {
         System.out.print("New Title: ");
         String title = scanner.nextLine();
         System.out.print("New Price: ");
-        double price = Double.parseDouble(scanner.nextLine());
+        double price;
+        try {
+            price = Double.parseDouble(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid price");
+            return;
+        }
         System.out.print("New Edition: ");
         String edition = scanner.nextLine();
         System.out.print("New Type (STUDYBOOK/JOURNAL/MAGAZINE): ");
-        BookType type = BookType.valueOf(scanner.nextLine().trim().toUpperCase());
+        BookType type;
+        try {
+            type = BookType.valueOf(scanner.nextLine().trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid type");
+            return;
+        }
         ServiceResult result = librarianService.updateBook(id, title, price, edition, type);
         System.out.println(result.getMessage());
     }
@@ -189,8 +244,8 @@ public class LibraryController {
     }
 
     private void handleListBooksByType() {
-        System.out.print("Type (STUDYBOOK/JOURNAL/MAGAZINE): ");
-        BookType type = BookType.valueOf(scanner.nextLine().trim().toUpperCase());
+        BookType type = promptEnum("Type", BookType.class);
+
         List<Book> books = librarianService.listBooksByType(type);
         if (books.isEmpty()) {
             System.out.println("No books for type");

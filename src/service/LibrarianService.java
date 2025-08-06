@@ -4,6 +4,7 @@ import model.Book;
 import model.BookType;
 import model.Reader;
 import repository.InMemoryLibraryRepository;
+import validation.BookValidator;
 
 import java.util.List;
 import java.util.Optional;

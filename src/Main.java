@@ -3,6 +3,8 @@ import model.*;
 import repository.InMemoryLibraryRepository;
 import service.LibrarianService;
 import service.ReaderService;
+import util.SampleDataInitializer;
+import validation.BookValidator;
 import validation.ReaderValidator;
 
 import java.time.LocalDate;
@@ -14,9 +16,11 @@ public class Main {
         ReaderValidator readerValidator = new ReaderValidator(repository);
         ReaderService readerService = new ReaderService(repository, readerValidator);
         LibrarianService librarianService = new LibrarianService(repository, bookValidator, readerService);
-        LibraryController controller = new LibraryController(librarianService, readerService);
 
+        // Initialize services
         // Preload sample data
+        SampleDataInitializer.initializeData(repository, librarianService);
+        LibraryController controller = new LibraryController(librarianService, readerService);
         Author author = new Author("Author One");
         Book book = new Book("B001", author, "Sample Book", 10.0, BookStatus.AVAILABLE, "1st", BookType.STUDYBOOK);
         librarianService.addBook(book);
