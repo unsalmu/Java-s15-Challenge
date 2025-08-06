@@ -6,10 +6,7 @@ import service.ReaderService;
 import service.ServiceResult;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LibraryController {
@@ -82,6 +79,7 @@ public class LibraryController {
                 case "11" -> handleAddMember();
                 case "12" -> handleListMembers();
                 case "13" -> handleListBorrowedBooks();
+                case "14" -> handleFineCalculation();
                 case "0" -> exit = true;
                 default -> System.out.println("Invalid choice");
             }
@@ -103,6 +101,7 @@ public class LibraryController {
 11-Add Member
 12-List Members
 13-List Borrowed Books
+14-Fine Calculation
 0-Exit""");
         System.out.print("Choice: ");
     }
@@ -283,5 +282,13 @@ public class LibraryController {
         } else {
             books.forEach(b -> System.out.println(b.getBookId() + " - " + b.getTitle()));
         }
+    }
+
+    private void handleFineCalculation() {
+        String memberId = promptNonBlank("Member ID: ");
+        String bookId   = promptNonBlank("Book ID: ");
+
+        ServiceResult res = librarianService.calculateFine(memberId, bookId);
+        System.out.println(res.getMessage());
     }
 }

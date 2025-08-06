@@ -5,21 +5,27 @@ import model.BookType;
 import model.Reader;
 import repository.InMemoryLibraryRepository;
 import validation.BookValidator;
+import validation.ReaderValidator;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
 public class LibrarianService {
+    private static final double FINE_PER_DAY = 1.0;
     private final InMemoryLibraryRepository repository;
     private final BookValidator bookValidator;
     private final ReaderService readerService;
+    private final ReaderValidator readerValidator;
 
     public LibrarianService(InMemoryLibraryRepository repository,
                             BookValidator bookValidator,
-                            ReaderService readerService) {
+                            ReaderService readerService, ReaderValidator readerValidator) {
         this.repository = repository;
         this.bookValidator = bookValidator;
         this.readerService = readerService;
+        this.readerValidator = readerValidator;
     }
 
     public ServiceResult addBook(Book book) {
@@ -87,4 +93,33 @@ public class LibrarianService {
     public List<Reader> listAllReaders() {
         return repository.findAllReaders();
     }
+
+
+
+    /* ctor'a ReaderValidator'ı enjekte etmeyi unutmayın */
+
+    public ServiceResult calculateFine(String memberId, String bookId) {
+
+        Optional<String> err = readerValidator.validateFine(memberId, bookId);
+        if (err.isPresent()) {
+            return new ServiceResult(false, err.get());   // ➜ hata mesajı
+        }
+
+
+        // Artık doğrulandı—kitap gerçekten bu üyede
+        Reader reader = repository.findReaderById(memberId).get();
+        Book   book   = repository.findBookById(bookId).get();
+
+        long overdueDays = ChronoUnit.DAYS
+                .between(book.getBorrowedDate(), LocalDate.now()) - 14;
+
+        double fine = overdueDays > 0 ? overdueDays * FINE_PER_DAY : 0;
+
+        String msg = fine > 0
+                ? String.format("Overdue fine: %.2f$", fine)
+                : "No overdue fine.";
+
+        return new ServiceResult(true, msg);
+    }
+
 }

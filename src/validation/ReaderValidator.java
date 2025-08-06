@@ -49,4 +49,16 @@ public class ReaderValidator {
         }
         return Optional.empty();
     }
+
+    public Optional<String> validateFine(String memberId, String bookId) {
+        Reader reader = repository.findReaderById(memberId).orElse(null);
+        if (reader == null)           return Optional.of("Reader not found");
+
+        Book book = repository.findBookById(bookId).orElse(null);
+        if (book == null)             return Optional.of("Book not found");
+
+        if (!reader.hasBook(book))    return Optional.of("Reader never borrowed this book");
+
+        return Optional.empty();      // her şey yolunda
+    }
 }

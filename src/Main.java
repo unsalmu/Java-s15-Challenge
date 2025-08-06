@@ -15,7 +15,7 @@ public class Main {
         BookValidator bookValidator = new BookValidator(repository);
         ReaderValidator readerValidator = new ReaderValidator(repository);
         ReaderService readerService = new ReaderService(repository, readerValidator);
-        LibrarianService librarianService = new LibrarianService(repository, bookValidator, readerService);
+        LibrarianService librarianService = new LibrarianService(repository, bookValidator, readerService, readerValidator);
 
         // Initialize services
         // Preload sample data
